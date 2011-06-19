@@ -1,0 +1,90 @@
+#-*-coding:utf-8-*-
+#Problem 13
+#Name: Cheng, Yu-Hsung & Wu, Tsuei-Shin
+#Collaborators: 
+#Time: 0.5h
+
+## module polyFit
+import numpy as np
+from ps12 import*
+
+def polyFit(xData,yData,m):
+    ''' 
+    Returns coefficients of the polynomial
+    p(x) = c[0] + c[1]x + c[2]x^2 +...+ c[m]x^m
+    that fits the specified data in the least
+    squares sense.
+
+    USAGE:
+        c = polyFit(xData,yData,m)
+    INPUT:
+        xData,yData : numpy arrays
+            data to be fitted
+        m : int
+            degree of p(x)
+    OUTPUT:
+        c : numpy array
+            coefficients of p(x)
+    '''
+    n=len(xData)
+    xData = np.array(xData, dtype=np.float64)[:n]
+    yData = np.array(yData, dtype=np.float64)[:n]
+    A = np.zeros((m+1,m+1))#m+1(0,1,2,...,m)
+    b = np.zeros((m+1,1))
+    for k in range(m+1):
+        for j in range(m+1):#m+1
+            A[k][j]=xData[0]**(j+k)
+            b[k] = (xData[0]**k)*yData[0]
+            for i in range(1,n):
+                A[k][j] = A[k][j]+xData[i]**(j+k)
+                b[k] = b[k]+(xData[i]**k)*yData[i]
+    # the matrice, A & b, are done.
+    # solve the Aa = b by LU decomposition.
+    c = LUsolve(LUdecomp(A),b)# have to LUdecomp(A) first?
+    return c 
+
+def stdDev(c, xData, yData):
+    '''
+    Computes the std. deviation between p(x)
+    and the data.
+    USAGE:
+        sigma = stdDev(c,xData,yData)
+    INPUT:
+        xData,yData : numpy arrays
+            data to be fitted
+        c : numpy array
+            coefficients of p(x)
+    OUTPUT:
+        sigma: float
+            std. deviation
+    '''
+    n = len(xData)
+    m = len(c)
+    def f(x, c):
+        ans = c[0]
+        for i in range(1,m):#do not need to +1
+            ans = ans+c[i]*(x**i)
+        return ans
+    S = (yData[0]-f(xData[0],c))**2
+    for i in range(1,n):
+        S = S+(yData[i]-f(xData[i],c))**2
+    std = (S/(n-m+1))**0.5 #n-(m-1)
+    return std
+
+if __name__ == '__main__':
+    # FinOpen = open("dataset2.dat",'r')
+    # FinRead = FinOpen.readlines()
+    # Data = [x.split('\n') for x in FinRead]
+    # data2=[]
+    # for x in Data:
+    #     data2.append(x[0].split('\t'))
+    # Data = data2
+    # n = len(Data)
+    # x2 = np.array([float(Data[i][0]) for i in range(n)])
+    # y2 = np.array([float(Data[i][1]) for i in range(n)])
+    
+    # polyFit(x2,y2,3)
+    # stdDev(polyFit(x2,y2,3), x2, y2)
+    
+    # print stdDev(polyFit(x2,y2,3), x2, y2)
+    # >>[  2.24076090e-08]
