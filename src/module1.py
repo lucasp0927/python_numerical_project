@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 '''Module 1, I/O Module
    Implements a function dataRead
 '''
@@ -19,3 +20,17 @@ def dataRead(filename):
                         vdata is an array of velocity data
 
     '''
+    tdata,xdata,vdata = [],[],[]
+    filein = open(filename,'r')
+    for aline in filein:
+        tmp = str.split(aline)
+        tdata.append(float(tmp[0]))
+        xdata.append(float(tmp[1]))
+        vdata.append(float(tmp[2]))                
+    return (np.array(tdata),np.array(xdata),np.array(vdata))
+
+if __name__ == '__main__':
+    tdata,xdata,vdata = dataRead('sample1.dat')
+    print tdata
+    print xdata
+    print vdata
