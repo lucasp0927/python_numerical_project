@@ -37,8 +37,3 @@ def odeSolve( f, x0, t ):
         x[i+1] = x[i] + ( k1 + 2.0 * ( k2 + k3 ) + k4 ) / 6.0
 
     return x
-
-
-
-
-   
