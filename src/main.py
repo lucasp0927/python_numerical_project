@@ -31,6 +31,7 @@ tstart=time.time()
 # c : velocity of the bullet
 filepath = 'data/sample'
 fit=np.zeros(4)
+#for test n=1,when in use, n should be change to n=20
 n=1
 for index in range(n):
     filename = filepath + str(index+1) + '.dat'
