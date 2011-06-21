@@ -24,17 +24,17 @@ tstart=time.time()
 # c : velocity of the bullet
 filepath = 'data/sample'
 for index in range(1):
-    #filename = filepath + str(index+1) + '.dat'
-    filename="test.dat"
+    filename = filepath + str(index+1) + '.dat'
+    #filename="test.dat"
     tdata,xdata,vdata = dataRead(filename)
     adata=df(tdata,vdata)[1]
     P2=adata+b*vdata[1:-1]
     tdata=tdata[1:-1]
     fit2=polyFit(tdata,P2,2)
     fit3=polyFit(tdata,P2,3)
-    if stdDev(fit2,tdata,P2)>stdDev(fit3,tdata,P2):
-       fit=fit3
-    fit=fit2
-    plt.plot(tdata,P2)
+    #if stdDev(fit2,tdata,P2)>stdDev(fit3,tdata,P2):
+    #   fit=fit3
+    #fit=fit2
+    plt.plot(tdata,P2,tdata,fit2[0]+fit2[1]*tdata+fit2[2]*tdata**2,tdata,fit3[0]+fit3[1]*tdata+fit3[2]*tdata**2+fit3[3]*tdata**3)
 plt.show()    
 print 'Total time:', (time.time()-tstart)
