@@ -144,13 +144,9 @@ def stdDev(c, xData, yData):
         sigma: float
             std. deviation
     '''
-    def p(c,x,n):
-        sum=0
-        for i in range(len(c)+1):
-            sum=sum+c[i]*(x**(i))
-        return sum
-    n= len(xdata)
-    s=0
-    for i in range(n+1):
-        s=s+(ydata[i]-f(c,xdata(i),n))**2
-    return math.sqrt(s/(n-len(c)))
+    z=np.zeros(len(xData))
+    for i in range(len(xData)):
+        for j in range(len(c)):
+            z[i]+=c[j]*np.power(xData[i],j)
+#    return np.power(sum(np.power(yData-z,2))/len(xData),0.5)
+    return sum(np.power(yData-z,2)
