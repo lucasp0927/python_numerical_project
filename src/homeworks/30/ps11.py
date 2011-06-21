@@ -88,3 +88,4 @@ def richardson( f, x, n, h ):
             j-=1
  
     return A
+
