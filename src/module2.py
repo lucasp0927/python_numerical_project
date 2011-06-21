@@ -21,10 +21,25 @@ def df(x,y):
     #from here 3N central differential formula is (f(x+h)-f(x-h))/2h
     h = x[1]-x[0]
     xout,out = [],[]
+    l = len(x)
     for i,x_i in enumerate(x[1:-1]): #first and last point dont have difference
-        xout.append(x_i)
-        out.append((y[i+2]-y[i])/2*h)#since i start frmo 0,so i need to plus 1
+        #########
+        #five point
+        ########
+        if (i==0 or i==l-3):
+            xout.append(x_i)
+            out.append((y[i+2]-y[i])/2*h)#since i start frmo 0,so i need to plus 1
+        else:
+            xout.append(x_i)
+            out.append((y[i-1]-8*y[i]+8*y[i+2]-y[i+3])/12*h)
+        ##########
+        #Three point
+        ##########
+        # xout.append(x_i)
+        # out.append((y[i+2]-y[i])/2*h)#since i start frmo 0,so i need to plus 1
+
     return (np.array(xout),np.array(out))
+
 
 if __name__ == '__main__':
     x=[1,2,3,4,5]
