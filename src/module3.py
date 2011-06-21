@@ -103,8 +103,8 @@ def polyFit(xData,yData,m):
         c : numpy array
             coefficients of p(x)
     '''
-    A=np.Zero(m+1,m+1)
-    b=np.Zero(m+1)
+    A=np.zero([m+1,m+1])
+    b=np.zero([m+1,1])
     n=len(xdata)
     for j in range(m+1):
         for k in range(m+1):
