@@ -149,4 +149,5 @@ def stdDev(c, xData, yData):
         for j in range(len(c)):
             z[i]+=c[j]*np.power(xData[i],j)
 #    return np.power(sum(np.power(yData-z,2))/len(xData),0.5)
-    return sum(np.power(yData-z,2)
+    return sum(np.power(yData-z,2))
+
