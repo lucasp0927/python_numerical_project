@@ -18,6 +18,9 @@ tstart=time.time()
 # x_int : interception point
 # l : distance from the motion
 # c : velocity of the bullet
-for time in range(20):
-    pass   
+filepath = 'data/sample'
+for index in range(20):
+    filename = filepath + str(index+1) + '.dat'
+    tdata,xdata,vdata = dataRead(filename)
+    print tdata
 print 'Total time:', (time.time()-tstart)

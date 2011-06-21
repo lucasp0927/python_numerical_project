@@ -28,6 +28,7 @@ def dataRead(filename):
         xdata.append(float(tmp[1]))
         vdata.append(float(tmp[2]))                
     return (np.array(tdata),np.array(xdata),np.array(vdata))
+    filein.close()
 
 if __name__ == '__main__':
     tdata,xdata,vdata = dataRead('sample1.dat')
