@@ -18,20 +18,30 @@ def gaussElimin(a,b):
     a=a*1.0
     b=b*1.0
     n=len(a)
-    x=np.zeros([n,1])
+    x=np.zeros(n)
     for k in range(n-1):
+        i=1
+        while a[k,k]==0:
+            for j in range(k,n):
+                c=a[k,j]
+                a[k,j]=a[k+i,j]
+                a[k+i,j]=c
+            c=b[k,0]
+            a[k,0]=a[k+i,0]
+            a[k+i,0]=c
+            i+=1
         for i in range(k+1,n):
             l=a[i,k]/a[k,k]
             a[i,k]=0
             for j in range(k+1,n):
                 a[i,j]=a[i,j]-l*a[k,j]
             b[i,0]=b[i,0]-l*b[k,0]
-    x[(n-1),0]=b[(n-1),0]/a[n-1,n-1]
+    x[(n-1)]=b[(n-1),0]/a[n-1,n-1]
     for i in range(n-2,-1,-1):
         v=b[i,0]
         for j in range(i+1,n):
-            v=v-a[i,j]*x[j,0]
-        x[i,0]=v/a[i,i]
+            v=v-a[i,j]*x[j]
+        x[i]=v/a[i,i]
     return x
 
 def LUdecomp(a):
@@ -103,22 +113,21 @@ def polyFit(xData,yData,m):
         c : numpy array
             coefficients of p(x)
     '''
-    A=np.zero([m+1,m+1])
-    b=np.zero([m+1,1])
-    n=len(xdata)
-    for j in range(m+1):
-        for k in range(m+1):
-            sum=0
-            for i in range(n+1):
-                sum=sum+x[i]**(j+k)
-            A[k][j]=sum
-    for k in range(m+1):
-        sum=0
-        for i in range(n+1):
-            sum=sum+y[i]*(x[i]**(k))
-        b[k]=sum
-    x = LUdecomp(A)
-    return LUsolve(x,b)
+    M=np.zeros([m+1,m+1])
+    Y=np.zeros([m+1,1])
+    for i in range(m+1):
+        s=sum(np.power(xData,i))
+        for j in range(i+1):
+            M[i-j,j]=s
+    for i in range(m):
+        s=sum(np.power(xData,2*m-i))
+        for j in range(i+1):
+            M[m-(i-j),m-j]=s
+
+    for i in range(m+1):
+        Y[i,0]=sum(np.power(xData,i)*yData)
+    
+    return gaussElimin(M,Y)
 
 def stdDev(c, xData, yData):
     '''
