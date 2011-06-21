@@ -32,7 +32,7 @@ tstart=time.time()
 filepath = 'data/sample'
 fit=np.zeros(4)
 #for test n=1,when in use, n should be change to n=20
-n=1
+n=20
 for index in range(n):
     filename = filepath + str(index+1) + '.dat'
     #filename="test.dat"
@@ -62,7 +62,7 @@ t=firing(tdata,x[:,0],x_int,l,c)
 
 ##############  verify #######################
 print "firing time",t
-plt.plot(tdata,x[:,0])
-plt.show()    
+#plt.plot(tdata,x[:,0])
+#plt.show()    
 print 'Total time:', (time.time()-tstart)
 ###########################################

@@ -64,6 +64,7 @@ def LUdecomp(a):
             for j in range(k+1,n):
                 a[i,j]=a[i,j]-l*a[k,j]
     return a
+
 def LUsolve(a,b):
     """Solves [L][U]{x} = b, where [a] = [L\U] is the matrix
     returned from LUdecomp.
@@ -78,7 +79,7 @@ def LUsolve(a,b):
     a=a*1.0
     b=b*1.0
     n=len(a)
-    x=np.zeros([n,1])
+    x=np.zeros(n)
     y=np.zeros([n,1])
     y[0,0]=b[0,0]
     for i in range(1,n):
@@ -87,12 +88,12 @@ def LUsolve(a,b):
             v=v-a[i,j]*y[j,0]
         y[i,0]=v
 
-    x[(n-1),0]=y[(n-1),0]/a[n-1,n-1]
+    x[n-1]=y[(n-1),0]/a[n-1,n-1]
     for i in range(n-2,-1,-1):
         v=y[i,0]
         for j in range(i+1,n):
-            v=v-a[i,j]*x[j,0]
-        x[i,0]=v/a[i,i]
+            v=v-a[i,j]*x[j]
+        x[i]=v/a[i,i]
     return x
 
 def polyFit(xData,yData,m):
@@ -127,7 +128,8 @@ def polyFit(xData,yData,m):
     for i in range(m+1):
         Y[i,0]=sum(np.power(xData,i)*yData)
     
-    return gaussElimin(M,Y)
+#    return gaussElimin(M,Y)
+    return LUsolve(LUdecomp(M),Y)
 
 def stdDev(c, xData, yData):
     '''
