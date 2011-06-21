@@ -23,7 +23,6 @@ def firing(t,x,x0,l,c):
     '''
 
     for i,x_i in enumerate(x):
-	print x_i,x0,x[i+1]
         if (x_i-x0)*(x0-x[i+1]) >= 0:#find faster way. multiplying may be slow?
             inter_t = t[i]
             break
