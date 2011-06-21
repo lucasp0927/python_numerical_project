@@ -55,7 +55,7 @@ def spring(x,t):
    x0=x[0]
    x1=x[1]
    return np.array([x1,fit[0]+fit[1]*x0+fit[2]*x0**2+fit[3]*x0**3-b*x1+Amp*np.cos(w*t)])
-:#the time range is tdata[1:-1] ,x[:,0]:position,x[:,1]velocity
+#the time range is tdata[1:-1] ,x[:,0]:position,x[:,1]velocity
 x=odeSolve(spring,[x0,v0],tdata)
 #the answer:firing time
 t=firing(tdata,x[:,0],x_int,l,c)
