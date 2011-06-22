@@ -24,7 +24,7 @@ import time
 tstart=time.time()
 
 Amp, w, b, x0,v0,x_int,l,c=paraRead()
-print paraRead()
+#print paraRead()
 # Amp : amplitude in A cos (w t)
 # w   : angular frequency
 # x0, v0: initial conditions
@@ -32,6 +32,10 @@ print paraRead()
 # l : distance from the motion
 # c : velocity of the bullet
 
+
+###########################################
+#Our codes start here
+##########################################
 filepath = 'data'
 fit=np.zeros(4)
 #for test n=1,when in use, n should be change to n=20
@@ -69,8 +73,12 @@ print "firing time",t0
 #plt.plot(tdata,x[:,0])
 #plt.show()
 ###########################################
+#Our codes end here
+##########################################
 
-
+#######################################
+#Below are code from professor's testkit
+######################################
 tsol=time.time()
 print 'solution phase elasped time:',tsol-tstart
 
