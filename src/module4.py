@@ -70,31 +70,10 @@ def pc4( f, x0, t ):
         x     - Np array containing solution values corresponding to each
                 entry in t array.  If a system is being solved, x will be
                 an array of arrays.
-
-    NOTES:
-        This function used the Adams-Bashforth-Moulton predictor-corrector
-        method to solve the initial value problem
-
-            dx
-            -- = f(x,t),     x(t(1)) = x0
-            dt
-
-        at the t values stored in the t array (so the interval of solution is
-        [t[0], t[N-1]].  The 4th-order Runge-Kutta method is used to generate
-        the first three values of the solution.  Notice that it works equally
-        well for scalar functions f(x,t) (in the case of a single 1st order
-        ODE) or for vector functions f(x,t) (in the case of multiple 1st order
-        ODEs).
-
     """
 
     n = len( t )
     x = np.array( [ x0 ] * n )
-
-    # Start up with 4th order Runge-Kutta (single-step method).  The extra
-    # code involving f0, f1, f2, and f3 helps us get ready for the multi-step
-    # method to follow in order to minimize the number of function evaluations
-    # needed.
 
     f1 = f2 = f3 = 0
     for i in xrange( min( 3, n - 1 ) ):
@@ -120,36 +99,6 @@ def pc4( f, x0, t ):
     return x
 
 def rk45( f, x0, t ):
-    """Fourth-order Runge-Kutta method with error estimate.
-
-    USAGE:
-        x, err = rk45(f, x0, t)
-
-    INPUT:
-        f     - function of x and t equal to dx/dt.  x may be multivalued,
-                in which case it should a list or a Np array.  In this
-                case f must return a Np array with the same dimension
-                as x.
-        x0    - the initial condition(s).  Specifies the value of x when
-                t = t[0].  Can be either a scalar or a list or Np array
-                if a system of equations is being solved.
-        t     - list or Np array of t values to compute solution at.
-                t[0] is the the initial condition point, and the difference
-                h=t[i+1]-t[i] determines the step size h.
-
-    OUTPUT:
-        x     - Np array containing solution values corresponding to each
-                entry in t array.  If a system is being solved, x will be
-                an array of arrays.
-        err   - Np array containing estimate of errors at each step.  If
-                a system is being solved, err will be an array of arrays.
-
-    NOTES:
-        This version is based on the algorithm presented in "Numerical
-        Mathematics and Computing" 6th Edition, by Cheney and Kincaid,
-        Brooks-Cole, 2008.
-    """
-
     # Coefficients used to compute the independent variable argument of f
 
     c20  =   2.500000000000000e-01  #  1/4
