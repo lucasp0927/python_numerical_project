@@ -29,9 +29,12 @@ def df(x,y):
         if (i==0 or i==l-3):
             xout.append(x_i)
             out.append((y[i+2]-y[i])/2*h)#since i start frmo 0,so i need to plus 1
-        else:
+        elif (i==1 or i==l-4):
             xout.append(x_i)
             out.append((y[i-1]-8*y[i]+8*y[i+2]-y[i+3])/12*h)
+        else:
+            xout.append(x_i)
+            out.append((-1*y[i-2]+9*y[i-1]-45*y[i]+45*y[i+2]-9*y[i+3]+y[i+4])/60*h)
         ##########
         #Three point
         ##########
