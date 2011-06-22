@@ -1,29 +1,30 @@
-#!/usr/bin/python2
-#from module0 import *
+#!/usr/bin/python2.6
+from module0 import *
 from module1 import *
 from module2 import *
 from module3 import *
 from module4 import *
 from module5 import *
-#from module6 import *
+from module6 import *
 import matplotlib.pyplot as plt
 import numpy as np
 import time
 
 ##############
-b=2.0
-Amp=1.0
-w=1.0
-x0=1.0
-v0=1.0
-x_int=0.5
-l=1.0
-c=1.0
+# b=2.0
+# Amp=1.0
+# w=1.0
+# x0=1.0
+# v0=1.0
+# x_int=0.5
+# l=1.0
+# c=1.0
 ############
 
 tstart=time.time()
 
-#Amp, w, b, x0,v0,x_int,l,c=paraRead('input.in')
+Amp, w, b, x0,v0,x_int,l,c=paraRead()
+#print paraRead()
 # Amp : amplitude in A cos (w t)
 # w   : angular frequency
 # x0, v0: initial conditions
@@ -31,7 +32,7 @@ tstart=time.time()
 # l : distance from the motion
 # c : velocity of the bullet
 
-filepath = 'data/sample'
+filepath = 'data'
 fit=np.zeros(4)
 #for test n=1,when in use, n should be change to n=20
 n=20
@@ -45,6 +46,7 @@ for index in range(n):
     fit3=polyFit(xdata,P2,3)
     #print fit3
     plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
+#    plt.plot(xdata,P2)
     print fit3
     fit+=fit3
 
