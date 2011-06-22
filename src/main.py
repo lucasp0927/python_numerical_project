@@ -24,7 +24,7 @@ import time
 tstart=time.time()
 
 Amp, w, b, x0,v0,x_int,l,c=paraRead()
-#print paraRead()
+print paraRead()
 # Amp : amplitude in A cos (w t)
 # w   : angular frequency
 # x0, v0: initial conditions
@@ -45,19 +45,11 @@ for index in range(n):
     xdata=xdata[1:-1]
     fit3=polyFit(xdata,P2,3)
     #print fit3
-    plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
-#    plt.plot(xdata,P2)
+#    plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
+#    plt.plot(tdata,adata)
     print fit3
     fit+=fit3
-
-    
-    #if stdDev(fit2,tdata,P2)>stdDev(fit3,tdata,P2):
-    #   fit+=fit3
-    #   print "111111111111111111111"
-    #else:
-    #   fit+=fit2
-    
-plt.show()
+#plt.show()
 fit/=float(n)
 def spring(x,t):
    x0=x[0]
@@ -70,11 +62,23 @@ x=pc4(spring,[x0,v0],tdata)
 #x=rk45(spring,[x0,v0],tdata)
 
 #the answer:firing time
-t=firing(tdata,x[:,0],x_int,l,c)
+t0=firing(tdata,x[:,0],x_int,l,c)
 
 ##############  verify #######################
-print "firing time",t
+print "firing time",t0
 #plt.plot(tdata,x[:,0])
 #plt.show()
-print 'Total time:', (time.time()-tstart)
 ###########################################
+
+
+tsol=time.time()
+print 'solution phase elasped time:',tsol-tstart
+
+# exact solution
+# t_exact: time series of the exact solution
+# x_exact: exact solution of x at t_exact
+t_exact, x_exact, error=exactSol(Amp, w, x0,v0,t0+l/c,x_int)
+print 'error: {0:8.2%}'.format( error)
+
+print 'exact phase elapsed time:',time.time()-tsol
+print 'total time:',time.time()-tstart
