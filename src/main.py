@@ -11,12 +11,12 @@ import numpy as np
 import time
 
 ##############
-b=1.0
+b=2.0
 Amp=1.0
 w=1.0
 x0=1.0
 v0=1.0
-x_int=2.5
+x_int=0.5
 l=1.0
 c=1.0
 ############
@@ -40,15 +40,21 @@ for index in range(n):
     adata=df(tdata,vdata)[1]
     P2=adata+b*vdata[1:-1]
     tdata=tdata[1:-1]
-    fit3=polyFit(tdata,P2,3)
+    xdata=xdata[1:-1]
+    fit3=polyFit(xdata,P2,3)
     #print fit3
-    #plt.plot(tdata,P2,tdata,fit3[0]+fit3[1]*tdata+fit3[2]*tdata**2+fit3[3]*tdata**3)
+    plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
+    print fit3
     fit+=fit3
+
+    
     #if stdDev(fit2,tdata,P2)>stdDev(fit3,tdata,P2):
     #   fit+=fit3
     #   print "111111111111111111111"
     #else:
     #   fit+=fit2
+    
+plt.show()
 fit/=float(n)
 #plt.plot(tdata,P2,tdata,fit[0]+fit[1]*tdata+fit[2]*tdata**2+fit[3]*tdata**3)
 def spring(x,t):
@@ -66,6 +72,6 @@ t=firing(tdata,x[:,0],x_int,l,c)
 ##############  verify #######################
 print "firing time",t
 #plt.plot(tdata,x[:,0])
-#plt.show()    
+#plt.show()
 print 'Total time:', (time.time()-tstart)
 ###########################################
