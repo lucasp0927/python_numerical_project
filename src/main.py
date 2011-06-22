@@ -36,8 +36,15 @@ Amp, w, b, x0,v0,x_int,l,c=paraRead()
 ###########################################
 #Our codes start here
 ##########################################
+def poly(n,x,fit):
+    ans=0.0
+    for i in range(n+1):
+        ans += fit[i]*x**i
+    return ans
+
+fit_n = 4
 filepath = 'data'
-fit=np.zeros(4)
+fit=np.zeros(fit_n+1)
 #for test n=1,when in use, n should be change to n=20
 n=20
 for index in range(n):
@@ -47,32 +54,28 @@ for index in range(n):
     P2=adata+b*vdata[1:-1]
     tdata=tdata[1:-1]
     xdata=xdata[1:-1]
-    fit3=polyFit(xdata,P2,3)
+    fit3=polyFit(xdata,P2,fit_n)
     #print fit3
 #    plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
+    plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3))
 #    plt.plot(tdata,adata)
     print fit3
     fit+=fit3
-#plt.show()
+plt.show()
 fit/=float(n)
 
-def poly(n,x,fit):
-    ans=0.0
-    for i in range(n+1):
-        ans += fit[i]*x**i
-    return ans
 
 def spring(x,t):
    x0=x[0]
    x1=x[1]
-#   return np.array([x1,poly(3,x1,fit)+Amp*np.cos(w*t)])
-   return np.array([x1,fit[0]+fit[1]*x1+fit[2]*x1**2+fit[3]*x1**3+Amp*np.cos(w*t)])
+   return np.array([x1,poly(fit_n,x0,fit)-b*x1+Amp*np.cos(w*t)])
+#   return np.array([x1,fit[0]+fit[1]*x0+fit[2]*x0**2+fit[3]*x0**3-b*x1+Amp*np.cos(w*t)])
 #the time range is tdata[1:-1] ,x[:,0]:position,x[:,1]velocity
 
 #################################
 #Here are three DE solver in module4
 ################################
-#tdata = np.linspace(tdata[0],tdata[-1],len(tdata)*5)
+tdata = np.linspace(tdata[0],tdata[-1],len(tdata)*5)
 #x=odeSolve(spring,[x0,v0],tdata)
 #x=pc4(spring,[x0,v0],tdata)
 x=rk45(spring,[x0,v0],tdata)
