@@ -53,36 +53,40 @@ n=20
 for index in range(n):
     filename = filepath + str(index+1) + '.dat'
     tdata,xdata,vdata = dataRead(filename)
-    xdata=smooth(xdata)
-    vdata=smooth(vdata)    
+    xdata[10:-10]=smooth(xdata)[10:-10]
+    vdata[10:-10]=smooth(vdata)[10:-10]
     adata=df(tdata,vdata)[1]
+    #add a sorter to sort x
     P2=adata+b*vdata[1:-1]
-    P2=smooth(P2)
+    P2[10:-10]=smooth(P2)[10:-10]
     tdata=tdata[1:-1]
     xdata=xdata[1:-1]
     fit3=polyFit(xdata,P2,fit_n)
+    a=[0.01,1.0,-0.5,0.25]
     #print fit3
 #    plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
-#    plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3))
+    plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3),xdata,poly(fit_n,xdata,a))
 #    plt.plot(tdata,adata)
     fit+=fit3
 #plt.plot(tdata,vdata[1:-1])
 #plt.plot(tdata,adata)    
-#plt.show()
+plt.show()
 fit/=float(n)
+print fit
 #print fit
 
 def spring(x,t):
    x0=x[0]
    x1=x[1]
-#   return np.array([x1,poly(fit_n,x0,fit)-b*x1+Amp*np.cos(w*t)])
-   return np.array([float(x1),fit[0]+fit[1]*x0+fit[2]*x0**2+fit[3]*x0**3-b*x1+Amp*np.cos(w*t)])
+   return np.array([x1,poly(fit_n,x0,fit)-b*x1+Amp*np.cos(w*t)])
+#   return np.array([float(x1),fit[0]+fit[1]*x0+fit[2]*x0**2+fit[3]*x0**3-b*x1+Amp*np.cos(w*t)])
 #the time range is tdata[1:-1] ,x[:,0]:position,x[:,1]velocity
 
 #################################
 #Here are three DE solver in module4
 ################################
-tdata = np.linspace(tdata[0],tdata[-1],len(tdata)*5)
+tdata = np.mgrid[tdata[0]:tdata[-1]:0.0005]
+
 #x_de=odeSolve(spring,[x0,v0],tdata)
 #x_de=pc4(spring,[x0,v0],tdata)
 x_de=rk45(spring,[x0,v0],tdata)
@@ -92,7 +96,7 @@ t0=firing(tdata,x_de[:,0],x_int,l,c)
 
 ##############  verify #######################
 #print "firing time",t0
-#plt.plot(xdata,poly(fit_n,xdata,fit))
+#Eplt.plot(xdata,poly(fit_n,xdata,fit))
 #plt.plot(tdata,x_de[:,0])
 #plt.show()
 ###########################################

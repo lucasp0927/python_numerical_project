@@ -3,6 +3,7 @@
     derivatives of a list of data on equally spaced interval
 '''
 import numpy as np
+import matplotlib.pyplot as plt
 def df(x,y):
     ''' Compute the first derivate of y(x) numerically, using the three-point
     central difference formula and assuming x is equally-spaced.
@@ -25,28 +26,28 @@ def df(x,y):
     for i,x_i in enumerate(x[1:-1]): #first and last point dont have difference
         #########
         #five point
-        ########
+        # ########
         if (i==0 or i==l-3):
             xout.append(x_i)
-            out.append((y[i+2]-y[i])/2*h)#since i start frmo 0,so i need to plus 1
+            out.append((y[i+2]-y[i])/(2*h))#since i start frmo 0,so i need to plus 1
         elif (i==1 or i==l-4):
             xout.append(x_i)
-            out.append((y[i-1]-8*y[i]+8*y[i+2]-y[i+3])/12*h)
+            out.append((y[i-1]-8*y[i]+8*y[i+2]-y[i+3])/(12*h))
         else:
             xout.append(x_i)
-            out.append((-1*y[i-2]+9*y[i-1]-45*y[i]+45*y[i+2]-9*y[i+3]+y[i+4])/60*h)
+            out.append((-1*y[i-2]+9*y[i-1]-45*y[i]+45*y[i+2]-9*y[i+3]+y[i+4])/(60*h))
         ##########
         #Three point
         ##########
-        # xout.append(x_i)
-        # out.append((y[i+2]-y[i])/2*h)#since i start frmo 0,so i need to plus 1
+#        xout.append(x_i)
+#        out.append((y[i+2]-y[i])/(2*h))#since i start frmo 0,so i need to plus 1
 
     return (np.array(xout),np.array(out))
 
 
 if __name__ == '__main__':
-    x=[1,2,3,4,5,7,8,9]
-    y=[10,20,30,40,90,70,80,90,100]
-    xout,out = df(x,y)
-    print xout
-    print out
+    t=np.linspace(0,10,100)
+    x=t
+    xout,out = df(t,x)
+    plt.plot(xout,out)
+    plt.show()

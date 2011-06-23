@@ -4,6 +4,7 @@ import scipy as sp
 from math import cos
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+from module4 import *
 
 # Parameters
 a0=float( raw_input('a0='))
@@ -65,9 +66,12 @@ for i in range(1,21):
     xinit=[i*0.01,i*.01]
 
     y=odeint(f,xinit,t,Dfun=jac,printmessg = False)
+#    y=rk45(f,xinit,t)
+#    y=odeint(f,xinit,t,printmessg = False)
     yn=y[:,0]+noise*y[:,0]*np.random.normal(size=len(t))
     vn=y[:,1]+noise*y[:,1]*np.random.normal(size=len(t))
-
+    yn=y[:,0]
+    vn=y[:,1]
     filname='data'+str(i)+'.dat'
     fout=open(filname,'w')
     for k in range(len(t)):
