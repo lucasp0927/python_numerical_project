@@ -65,12 +65,12 @@ for index in range(n):
     a=[0.01,1.0,-0.5,0.25]
     #print fit3
 #    plt.plot(xdata,P2,xdata,fit3[0]+fit3[1]*xdata+fit3[2]*xdata**2+fit3[3]*xdata**3)
-    plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3),xdata,poly(fit_n,xdata,a))
+#    plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3),xdata,poly(fit_n,xdata,a))
 #    plt.plot(tdata,adata)
     fit+=fit3
 #plt.plot(tdata,vdata[1:-1])
 #plt.plot(tdata,adata)    
-plt.show()
+#plt.show()
 fit/=float(n)
 print fit
 #print fit
@@ -85,11 +85,11 @@ def spring(x,t):
 #################################
 #Here are three DE solver in module4
 ################################
-tdata = np.mgrid[tdata[0]:tdata[-1]:0.0005]
+#tdata = np.mgrid[tdata[0]:tdata[-1]:0.001]
 
 #x_de=odeSolve(spring,[x0,v0],tdata)
 #x_de=pc4(spring,[x0,v0],tdata)
-x_de=rk45(spring,[x0,v0],tdata)
+x_de,tdata=rk45(spring,[x0,v0],tdata[0],tdata[-1])
 
 #the answer:firing time
 t0=firing(tdata,x_de[:,0],x_int,l,c)

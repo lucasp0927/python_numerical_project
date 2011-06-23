@@ -98,7 +98,9 @@ def pc4( f, x0, t ):
 
     return x
 
-def rk45( f, x0, t ):
+def rk45( f, x0, t0,t1 ):
+    t_now = t0
+    t=[t0]
     # Coefficients used to compute the independent variable argument of f
 
     c20  =   2.500000000000000e-01  #  1/4
@@ -140,10 +142,14 @@ def rk45( f, x0, t ):
     b5  =  -1.800000000000000e-01  # -9.0/50.0
     b6  =   3.636363636363636e-02  #  2.0/55.0
 
-    n = len( t )
-    x = np.array( [ x0 ] * n )
-    for i in xrange( n - 1 ):
-        h = t[i+1] - t[i]
+#    n = len( t )
+#    x = np.array( [ x0 ] * n )
+    x=[x0]
+    h = 0.001
+    i=0
+    while t_now<t1:
+#    for i in xrange( n - 1 ):
+#        h = t[i+1] - t[i]
         k1 = h * f( x[i], t[i] )
         k2 = h * f( x[i] + c21 * k1, t[i] + c20 * h )
         k3 = h * f( x[i] + c31 * k1 + c32 * k2, t[i] + c30 * h )
@@ -153,12 +159,20 @@ def rk45( f, x0, t ):
         k6 = h * f( \
             x[i] + c61 * k1 + c62 * k2 + c63 * k3 + c64 * k4 + c65 * k5, \
             t[i] + c60 * h )
+        t.append(t_now)
+#        x[i+1] = x[i] + a1 * k1 + a3 * k3 + a4 * k4 + a5 * k5
+        x_next = a1 * k1 + a3 * k3 + a4 * k4 + a5 * k5
+        if (x_next[0] >= 0.0001) or (x_next[1]>=0.0001):
+            h /= 2.0
 
-        x[i+1] = x[i] + a1 * k1 + a3 * k3 + a4 * k4 + a5 * k5
-        x5 = x[i] + b1 * k1 + b3 * k3 + b4 * k4 + b5 * k5 + b6 * k6
+        if (x_next[0] <= 0.00005) or (x_next[1]<=0.00005):
+            h *= 2.0
 
-
-    return x
+        x.append(x[i] + x_next)
+#        x5 = x[i] + b1 * k1 + b3 * k3 + b4 * k4 + b5 * k5 + b6 * k6
+        t_now += h
+        i+=1
+    return np.array(x),np.array(t)
 
 def smooth(x,window_len=5,window='hanning'):
     """smooth the data using a window with requested size.
