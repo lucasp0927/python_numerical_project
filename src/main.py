@@ -33,7 +33,9 @@ def main():
     # x_int : interception point
     # l : distance from the motion
     # c : velocity of the bullet
-
+    def window_length(tao):
+        #print w
+        return 2*np.pi/w/10/tao
 
     ###########################################
     #Our codes start here
@@ -56,15 +58,14 @@ def main():
         filename = filepath + str(index+1) + '.dat'
         tdata,xdata,vdata = dataRead(filename)
 
-    #    xdata[10:-10]=smooth(xdata)[10:-10]
-    #    vdata[10:-10]=smooth(vdata)[10:-10]
         xdata=smooth(xdata,window_len=50,window='flat')
         vdata=smooth(vdata,window_len=50,window='flat')
 
         adata=df(tdata,vdata)[1]
-#        plt.plot(tdata[1:-1],adata)
-        adata=smooth(adata,window_len=50,window='hamming') #hamming window is really good here
-#        plt.plot(tdata[1:-1],adata)
+        plt.plot(tdata[1:-1],adata)
+        adata=smooth(adata,window_len=window_length(tdata[1]-tdata[0]),window='hamming') #hamming window is really good here 104 best for dataset2
+        adata=smooth(adata,window_len=104,window='hamming') #hamming window is really good here 104 best for dataset2        
+        plt.plot(tdata[1:-1],adata)
 
         #TODO add a sorter to sort x
         P2=adata+b*vdata[1:-1]
@@ -78,7 +79,7 @@ def main():
         fit+=fit3
     #plt.plot(tdata,vdata[1:-1])
     #plt.plot(tdata,adata)
-#    plt.show()
+    plt.show()
     fit/=float(n)
     print fit
 
@@ -92,7 +93,7 @@ def main():
     #################################
     #Here are three DE solver in module4
     ################################
-    #tdata = np.mgrid[tdata[0]:tdata[-1]:0.001]
+    tdata = np.mgrid[tdata[0]:tdata[-1]:0.001]
 
     #x_de=odeSolve(spring,[x0,v0],tdata)
     #x_de=pc4(spring,[x0,v0],tdata)
@@ -105,8 +106,8 @@ def main():
     ##############  verify #######################
     #print "firing time",t0
     #Eplt.plot(xdata,poly(fit_n,xdata,fit))
-    #plt.plot(tdata,x_de[:,0])
-    #plt.show()
+#    plt.plot(tdata,x_de[:,0])
+#    plt.show()
     ###########################################
     #Our codes end here
     ##########################################
@@ -126,9 +127,17 @@ def main():
 #    print 'total time:',time.time()-tstart
     return error
 
-if __name__ == '__main__':
-    n=50.0
+def test():
+    n=20.0
     err=0.0
-    for i in range(int(n)):
-        err+=main()
-    print err/n*100
+    err_m = []
+    w_m = np.linspace(70,130,20)
+    for w in w_m:
+        err=0.0
+        for i in range(int(n)):
+            err+=main(w)
+        err_m.append(err/n*100)
+    print zip(w_m,err_m)
+    
+if __name__ == '__main__':
+    main()
