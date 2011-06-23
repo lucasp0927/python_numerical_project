@@ -85,10 +85,11 @@ def spring(x,t):
 #################################
 #Here are three DE solver in module4
 ################################
-tdata = np.mgrid[tdata[0]:tdata[-1]:0.001]
+#tdata = np.mgrid[tdata[0]:tdata[-1]:0.001]
 
 #x_de=odeSolve(spring,[x0,v0],tdata)
-x_de=pc4(spring,[x0,v0],tdata)
+#x_de=pc4(spring,[x0,v0],tdata)
+x_de=rk452(spring,[x0,v0],tdata)
 #x_de,tdata=rk45(spring,[x0,v0],tdata[0],tdata[-1])
 
 #the answer:firing time
