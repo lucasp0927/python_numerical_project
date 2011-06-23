@@ -145,8 +145,11 @@ def rk45( f, x0, t0,t1 ):
 #    n = len( t )
 #    x = np.array( [ x0 ] * n )
     x=[x0]
+    h_max = 0.001
     h = 0.001
     i=0
+    s1=0
+    s2=0
     while t_now<t1:
 #    for i in xrange( n - 1 ):
 #        h = t[i+1] - t[i]
@@ -162,16 +165,19 @@ def rk45( f, x0, t0,t1 ):
         t.append(t_now)
 #        x[i+1] = x[i] + a1 * k1 + a3 * k3 + a4 * k4 + a5 * k5
         x_next = a1 * k1 + a3 * k3 + a4 * k4 + a5 * k5
-        if (x_next[0] >= 0.0001) or (x_next[1]>=0.0001):
+        
+        if (np.abs(np.min(s1-s2))>0.2):
             h /= 2.0
-
-        if (x_next[0] <= 0.00005) or (x_next[1]<=0.00005):
+            print h
+        if np.abs(np.min(s1-s2)<0.15) and (h<h_max/2):
             h *= 2.0
-
+            print h
         x.append(x[i] + x_next)
 #        x5 = x[i] + b1 * k1 + b3 * k3 + b4 * k4 + b5 * k5 + b6 * k6
         t_now += h
         i+=1
+        s1=s2
+        s2=x_next/h
     return np.array(x),np.array(t)
 
 def smooth(x,window_len=5,window='hanning'):
