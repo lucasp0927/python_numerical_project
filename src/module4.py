@@ -180,7 +180,7 @@ def rk45( f, x0, t0,t1 ):
         s2=x_next/h
     return np.array(x),np.array(t)
 
-def smooth(x,window_len=5,window='hanning'):
+def smooth(x,window_len=50,window='flat'):
     """smooth the data using a window with requested size.
 
     This method is based on the convolution of a scaled window with the signal.
