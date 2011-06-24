@@ -42,6 +42,7 @@ def poly(n,x,fit):
 def main():
     tstart=time.time()
     Amp, w, b, x0,v0,x_int,l,c=paraRead()
+    print paraRead()
     # Amp : amplitude in A cos (w t)
     # w   : angular frequency
     # x0, v0: initial conditions
@@ -51,19 +52,24 @@ def main():
     fit_n = 3
     filepath = 'data'
     fit=np.zeros(fit_n+1)
+    
     nl=noise_level()                    # calculate noise level
-
+#    nl=0
+    
     n=20 #sample file number
     for index in range(n):
         filename = filepath + str(index+1) + '.dat'
         tdata,xdata,vdata = dataRead(filename)
-#        plt.plot(tdata,xdata)
+        plt.plot(tdata,xdata)
 
         # if noise level bigger than 3 start smoothing
         if nl>3.0:
             xdata=smooth(xdata,window_len=int((nl-2)*3.3),window='flat')
             vdata=smooth(vdata,window_len=int(nl-2*3.3),window='flat')
-
+            
+#        xdata = poly(8,tdata,polyFit(tdata,xdata,8)) #to use this method uncomment nl=0
+#        vdata = poly(8,tdata,polyFit(tdata,vdata,8))
+        plt.plot(tdata,xdata)        
         adata=df(tdata,vdata)[1]
 
         if nl>3.0:
@@ -73,7 +79,7 @@ def main():
         tdata=tdata[1:-1]
         xdata=xdata[1:-1]
         fit3=polyFit(xdata,P2,fit_n)
-        plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3))
+#        plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3))
         fit+=fit3
     plt.show()
     fit/=float(n)
@@ -120,16 +126,20 @@ def main():
     return error
 
 def test():
-    n=20.0
+    n=10
     err=0.0
-    err_m = []
-    w_m = np.linspace(70,130,20)
-    for w in w_m:
-        err=0.0
-        for i in range(int(n)):
-            err+=main(w)
-        err_m.append(err/n*100)
-    print zip(w_m,err_m)
-
+    # err_m = []
+    # w_m = np.linspace(70,130,20)
+    # for w in w_m:
+    #     err=0.0
+    #     for i in range(int(n)):
+    #         err+=main(w)
+    #     err_m.append(err/n*100)
+    # print zip(w_m,err_m)
+    for i in range(n):
+        err += main()
+    print err/float(n)
+    
 if __name__ == '__main__':
     main()
+#     test()
