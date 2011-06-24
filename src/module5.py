@@ -27,9 +27,11 @@ def firing(t,x,x0,l,c):
 #            inter_t = t[i]
             j=i
             break
+    else:
+        # guess an answer if for loop doesn't find one
+        j=int(np.random.rand()*len(x[:-1]))
     # x intercept between t[i] and t[i+1]
     # t is the time such that x(t0)=x0
     t=t[j]+(t[j+1]-t[j])/(x[j+1]-x[j])*(x0-x[j])
-#    t=inter_t
     #return the firing time
     return t-l/c

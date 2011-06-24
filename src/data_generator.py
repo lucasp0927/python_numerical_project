@@ -68,8 +68,6 @@ for i in range(1,21):
     y=odeint(f,xinit,t,Dfun=jac,printmessg = False)
     yn=y[:,0]+noise*y[:,0]*np.random.normal(size=len(t))
     vn=y[:,1]+noise*y[:,1]*np.random.normal(size=len(t))
-    yn=y[:,0]
-    vn=y[:,1]
     filname='data'+str(i)+'.dat'
     fout=open(filname,'w')
     for k in range(len(t)):
