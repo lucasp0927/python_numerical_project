@@ -168,10 +168,10 @@ def rk45( f, x0, t0,t1 ):
         
         if (np.abs(np.min(s1-s2))>0.2):
             h /= 2.0
-            print h
+#            print h
         if np.abs(np.min(s1-s2)<0.15) and (h<h_max/2):
             h *= 2.0
-            print h
+#            print h
         x.append(x[i] + x_next)
 #        x5 = x[i] + b1 * k1 + b3 * k3 + b4 * k4 + b5 * k5 + b6 * k6
         t_now += h
@@ -222,14 +222,27 @@ def smooth(x,window_len=50,window='flat'):
         return x
 
 
-    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'"
+    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman','gaussian','median']:
+        raise ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman','gaussian','median'"
 
 
     s=np.r_[2*x[0]-x[window_len-1::-1],x,2*x[-1]-x[-1:-window_len:-1]]
     #print(len(s))
     if window == 'flat': #moving average
         w=np.ones(window_len,'d')
+    elif window == 'gaussian':
+        x=np.arange(window_len)
+        w=np.exp(-0.5*((x-(window_len/2))/(0.5*(window_len-1)/2))**2)
+    elif window =='median':
+        y=np.zeros(len(x))        
+        for i in range(len(x)):
+            if i < window_len/2:
+                y[i] = np.median(x[0:2*i+1])
+            elif i > len(x)-window_len/2:
+                y[i] = np.median(x[-1:-1*2*(len(x)-i):-1])
+            else:
+                y[i] = np.median(x[i-window_len/2:i+window_len/2])
+        return y
     else:
         w=eval('np.'+window+'(window_len)')
 

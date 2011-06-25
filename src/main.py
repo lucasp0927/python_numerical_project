@@ -60,16 +60,16 @@ def main():
     for index in range(n):
         filename = filepath + str(index+1) + '.dat'
         tdata,xdata,vdata = dataRead(filename)
-        plt.plot(tdata,xdata)
+#        plt.plot(tdata,xdata)
 
         # if noise level bigger than 3 start smoothing
         if nl>3.0:
-            xdata=smooth(xdata,window_len=int((nl-2)*3.3),window='flat')
-            vdata=smooth(vdata,window_len=int(nl-2*3.3),window='flat')
+            xdata=smooth(xdata,window_len=int((nl-2)*4),window='gaussian')
+            vdata=smooth(vdata,window_len=int(nl-2)*4,window='gaussian')
             
-#        xdata = poly(8,tdata,polyFit(tdata,xdata,8)) #to use this method uncomment nl=0
+ #       xdata = poly(8,tdata,polyFit(tdata,xdata,8)) #to use this method uncomment nl=0
 #        vdata = poly(8,tdata,polyFit(tdata,vdata,8))
-        plt.plot(tdata,xdata)        
+#        plt.plot(tdata,xdata)        
         adata=df(tdata,vdata)[1]
 
         if nl>3.0:
@@ -81,7 +81,7 @@ def main():
         fit3=polyFit(xdata,P2,fit_n)
 #        plt.plot(xdata,P2,xdata,poly(fit_n,xdata,fit3))
         fit+=fit3
-    plt.show()
+#    plt.show()
     fit/=float(n)
     print fit
 
@@ -141,5 +141,5 @@ def test():
     print err/float(n)
     
 if __name__ == '__main__':
-    main()
-#     test()
+#    main()
+     test()
