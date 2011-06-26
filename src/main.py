@@ -42,7 +42,7 @@ def poly(n,x,fit):
 def main():
     tstart=time.time()
     Amp, w, b, x0,v0,x_int,l,c=paraRead()
-    print paraRead()
+#    print paraRead()
     # Amp : amplitude in A cos (w t)
     # w   : angular frequency
     # x0, v0: initial conditions
@@ -83,7 +83,7 @@ def main():
         fit+=fit3
 #    plt.show()
     fit/=float(n)
-    print fit
+#    print fit
 
     def spring(x,t):
        x0=x[0]
@@ -114,7 +114,7 @@ def main():
     #Below are code from professor's testkit
     ######################################
     tsol=time.time()
-#    print 'solution phase elasped time:',tsol-tstart
+    print 'solution phase elasped time:',tsol-tstart
 
     # exact solution
     # t_exact: time series of the exact solution
@@ -123,7 +123,7 @@ def main():
     print 'error: {0:8.2%}'.format( error)
     print 'exact phase elapsed time:',time.time()-tsol
     print 'total time:',time.time()-tstart
-    return error
+#    return error
 
 def test():
     n=10
@@ -141,5 +141,5 @@ def test():
     print err/float(n)
     
 if __name__ == '__main__':
-#    main()
-     test()
+    main()
+#     test()
